@@ -2,7 +2,7 @@ const map = L.map('map', {preferCanvas: true}).setView([23.43631, 0], 2);
 
 L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer/tile/{z}/{y}/{x}', {
   maxZoom: 16,
-  attribution: 'Tiles &copy; Esri'
+  attribution: '&copy; Esri'
 }).addTo(map);
 
 document.querySelector('.leaflet-attribution-flag').remove();
