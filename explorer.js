@@ -29,7 +29,7 @@ function render_admix(data, type, row) {
   return div;
 }
 
-function render_skin(data, type, row) {
+function render_skin(data, type) {
   if (type != 'display' || data == 'NA') {
     return data;
   }
@@ -42,7 +42,15 @@ function render_skin(data, type, row) {
   }
 }
 
-function render_hair(data, type, row) {
+function render_skin_map(data) {
+  if (data == 'NA') {
+    return data;
+  }
+  const class_ = 'skin_' + data.toLowerCase().replace(/[ -]/g, '_');
+  return `<span class="${class_}">${data}</span>`;
+}
+
+function render_hair(data, type) {
   if (type != 'display' || data == 'NA') {
     return data;
   }
@@ -55,7 +63,15 @@ function render_hair(data, type, row) {
   }
 }
 
-function render_eyes(data, type, row) {
+function render_hair_map(data) {
+  if (data == 'NA') {
+    return data;
+  }
+  const class_ = 'hair_' + data.toLowerCase().replace(/[-/]/g, '_');
+  return `<span class="${class_}">${data}</span>`;
+}
+
+function render_eyes(data, type) {
   if (type != 'display' || data == 'NA') {
     return data;
   }
@@ -68,10 +84,22 @@ function render_eyes(data, type, row) {
   }
 }
 
-function render_date(data, type, row) {
+function render_eyes_map(data) {
+  if (data == 'NA') {
+    return data;
+  }
+  const class_ = 'eyes_' + data.toLowerCase();
+  return `<span class="${class_}">${data}</span>`;
+}
+
+function render_date(data, type) {
   if (type != 'display') {
     return data;
   }
+  return data.toString().replace('-', '&minus;').replace(/(\d{2})(\d{3})/, '$1,$2');
+}
+
+function render_date_map(data) {
   return data.toString().replace('-', '&minus;').replace(/(\d{2})(\d{3})/, '$1,$2');
 }
 
@@ -188,9 +216,12 @@ function update_map() {
         fillOpacity: 0.5,
         radius: 5000
       }).addTo(circles);
+      columns = [id, group, date, sex, isogg, yfull, mito, skin, hair, eyes];
+      f = x => x;
+      renderers = [f, f, render_date_map, f, f, f, f, render_skin_map, render_hair_map, render_eyes_map];
       text = '';
-      for (let j of [id, group, date, sex, isogg, yfull, mito, skin, hair, eyes]) {
-        text += `${titles[j]}: ${data[i][j]}<br>`;
+      for (let j = 0; j < columns.length; j++) {
+        text += `${titles[columns[j]]}: ${renderers[j](data[i][columns[j]])}<br>`;
       }
       circle.bindPopup(text);
     }
