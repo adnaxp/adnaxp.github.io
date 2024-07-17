@@ -24,8 +24,8 @@
     <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css'>
     <script src='https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.8.0/nouislider.min.js' integrity='sha512-g/feAizmeiVKSwvfW0Xk3ZHZqv5Zs8PEXEBKzL15pM0SevEvoX8eJ4yFWbqakvRj7vtw1Q97bLzEpG2IVWX0Mg==' crossorigin='anonymous' referrerpolicy='no-referrer'></script>
     <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.8.0/nouislider.min.css' integrity='sha512-qveKnGrvOChbSzAdtSs8p69eoLegyh+1hwOMbmpCViIwj7rn4oJjdmMvWOuyQlTOZgTlZA0N2PXA7iA8/2TUYA==' crossorigin='anonymous' referrerpolicy='no-referrer' />
-    <script src='explorer.js?v=3' defer></script>
-    <link rel='stylesheet' href='explorer.css?v=1'>
+    <script src='explorer.js?v=4' defer></script>
+    <link rel='stylesheet' href='explorer.css?v=2'>
   </head>
   <body>
     <div class='content'>
@@ -34,9 +34,26 @@
       </div>
       <div id='controldiv' class='split'>
         <div id='date-range'></div>
-        <button id='select-run-button' type='button' class='btn btn-primary' data-bs-toggle='modal' data-bs-target='#select-run-modal'>
-          Select admixture run
-        </button>
+        <div class='row mt-5'>
+          <div class='col'>
+            <button id='select-run-button' type='button' class='btn btn-primary' data-bs-toggle='modal' data-bs-target='#select-run-modal'>
+              Select admixture run
+            </button>
+          </div>
+          <div class='col'>
+            <div class='row g-2'>
+              <label for='point-color-select' class='col-auto col-form-label'>Color map points by:</label>
+              <div class='col-auto'>
+                <select class='form-select' id='point-color-select' onchange='update_map()'>
+                  <option value='admixture'>Admixture</option>
+                  <option value='skin'>Skin</option>
+                  <option value='hair'>Hair</option>
+                  <option value='eyes'>Eyes</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
       <div id='tablediv' class='split'>
         <table id='table' style='width: 100%;'>

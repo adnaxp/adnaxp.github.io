@@ -106,10 +106,6 @@ body {
   background: var(--bs-blue);
 }
 
-#select-run-button {
-  margin-top: 50px;
-}
-
 .skin_very_pale {
   background-color: #fff4f2;
   color: black;

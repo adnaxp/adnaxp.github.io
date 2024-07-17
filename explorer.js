@@ -203,28 +203,69 @@ function index_of_max(arr) {
     return max_index;
 }
 
+const skin_colors = new Map([
+  ['Very Pale', '#fff4f2'],
+  ['Pale', '#fedcb9'],
+  ['Intermediate', '#d7a57a'],
+  ['Dark', '#a46136'],
+  ['Dark-to-Black', '#5e4437']
+]);
+
+const hair_colors = new Map([
+  ['Black', '#000000'],
+  ['D-brown/Black', '#59260b'],
+  ['Blond', '#fbec5d'],
+  ['Blond/D-blond', '#fbec5d'],
+  ['D-blond/Brown', '#daa520'],
+  ['Brown', '#964b00'],
+  ['Brown/D-brown', '#964b00'],
+  ['Red', '#c80815'],
+  ['Light', '#daa520'],
+  ['Dark', '#000000']
+]);
+
+const eye_colors = new Map([
+  ['Blue', '#318ce7'],
+  ['Intermediate', '#646c74'],
+  ['Brown', '#964b00']
+]);
+
 function update_map() {
   const data = table.rows({page: 'current', search: 'applied'}).data();
   circles.clearLayers();
-  let circle;
+  let color, circle;
+  const color_by = document.getElementById('point-color-select').value;
   for (let i = 0; i < data.length; i++) {
-    if (data[i][lat] != null) {
-      color = colors[index_of_max(data[i].slice(admix))];
-      circle = L.circle([data[i][lat], data[i][long]], {
-        color: color,
-        fillColor: color,
-        fillOpacity: 0.5,
-        radius: 5000
-      }).addTo(circles);
-      columns = [id, group, date, sex, isogg, yfull, mito, skin, hair, eyes];
-      f = x => x;
-      renderers = [f, f, render_date_map, f, f, f, f, render_skin_map, render_hair_map, render_eyes_map];
-      text = '';
-      for (let j = 0; j < columns.length; j++) {
-        text += `${titles[columns[j]]}: ${renderers[j](data[i][columns[j]])}<br>`;
-      }
-      circle.bindPopup(text);
+    if (data[i][lat] == null) continue;
+    switch (color_by) {
+      case 'admixture':
+        color = colors[index_of_max(data[i].slice(admix))];
+        break;
+      case 'skin':
+        if (data[i][skin] == 'NA') continue;
+        color = skin_colors.get(data[i][skin]);
+        break;
+      case 'hair':
+        if (data[i][hair] == 'NA') continue;
+        color = hair_colors.get(data[i][hair]);
+        break;
+      case 'eyes':
+        if (data[i][eyes] == 'NA') continue;
+        color = eye_colors.get(data[i][eyes]);
     }
+    circle = L.circle([data[i][lat], data[i][long]], {
+      color: color,
+      fillOpacity: 0.5,
+      radius: 5000
+    }).addTo(circles);
+    columns = [id, group, date, sex, isogg, yfull, mito, skin, hair, eyes];
+    f = x => x;
+    renderers = [f, f, render_date_map, f, f, f, f, render_skin_map, render_hair_map, render_eyes_map];
+    text = '';
+    for (let j = 0; j < columns.length; j++) {
+      text += `${titles[columns[j]]}: ${renderers[j](data[i][columns[j]])}<br>`;
+    }
+    circle.bindPopup(text);
   }
 }
 
