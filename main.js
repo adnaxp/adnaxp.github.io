@@ -21,6 +21,50 @@ function renderAdmix(params) {
   return div;
 }
 
+function yHgClass(params) {
+  if (params.value == null) {
+    return null;
+  }
+  if (/^(A0-T|[A-Z]{2,})/.test(params.value)) {
+    return 'y-hg-other';
+  }
+  const hg = params.value.match(/^(E1b1b|[A-Z])/)[0];
+  return 'y-hg-' + hg.toLowerCase();
+}
+
+function renderYHg(data) {
+  let class_;
+  if (/^(A0-T|[A-Z]{2,})/.test(data)) {
+    class_ = 'y-hg-other';
+  } else {
+    const hg = data.match(/^(E1b1b|[A-Z])/)[0];
+    class_ = 'y-hg-' + hg.toLowerCase();
+  }
+  return `<span class="${class_}">${data}</span>`;
+}
+
+function mitoHgClass(params) {
+  if (params.value == null) {
+    return null;
+  }
+  if (/^L([^0-3]|[0-3]')/.test(params.value)) {
+    return 'mito-hg-other';
+  }
+  const hg = params.value.match(/^(HV|L[0-3]|R0|[A-Z])/)[0];
+  return 'mito-hg-' + hg.toLowerCase();
+}
+
+function renderMitoHg(data) {
+  let class_;
+  if (/^L([^0-3]|[0-3]')/.test(data)) {
+    class_ = 'mito-hg-other';
+  } else {
+    const hg = data.match(/^(HV|L[0-3]|R0|[A-Z])/)[0];
+    class_ = 'mito-hg-' + hg.toLowerCase();
+  }
+  return `<span class="${class_}">${data}</span>`;
+}
+
 function skinClass(params) {
   if (params.value == null) {
     return null;
@@ -80,14 +124,14 @@ let gridOptions = {
     { headerName: 'ID', field: 'id', width: 115, pinned: 'left' },
     { headerName: 'Group', field: 'group', width: 180 },
     { headerName: 'Date', field: 'date', width: 86, valueFormatter: formatDate, filter: false },
-    { headerName: 'ISOGG Y Hg', field: 'isogg', width: 160 },
-    { headerName: 'Mito Hg', field: 'mito', width: 114 },
+    { headerName: 'ISOGG Y Hg', field: 'isogg', width: 160, cellClass: yHgClass },
+    { headerName: 'Mito Hg', field: 'mito', width: 114, cellClass: mitoHgClass },
     { headerName: 'Skin', field: 'skin', width: 76, cellClass: skinClass },
     { headerName: 'Hair', field: 'hair', width: 76, cellClass: hairClass },
     { headerName: 'Eyes', field: 'eyes', width: 76, cellClass: eyesClass },
     { headerName: 'Country', field: 'country', width: 135 },
     { headerName: 'Sex', field: 'sex', width: 76 },
-    { headerName: 'YFull Y Hg', field: 'yfull', width: 135 },
+    { headerName: 'YFull Y Hg', field: 'yfull', width: 135, cellClass: yHgClass },
     { headerName: 'Index', field: 'index', width: 90 }
   ],
   enableCellTextSelection: true,
@@ -163,6 +207,63 @@ function indexOfMax(arr) {
     return maxIndex;
 }
 
+const yHgColors = new Map([
+  ['A', '#000000'],
+  ['B', '#59260b'],
+  ['C', '#fed8b1'],
+  ['D', '#ff8c00'],
+  ['E', '#964b00'],
+  ['E1b1b', '#40e0d0'],
+  ['F', '#dcdcdc'],
+  ['G', '#6cb4ee'],
+  ['H', '#138808'],
+  ['I', '#000080'],
+  ['J', '#008080'],
+  ['K', '#dcdcdc'],
+  ['L', '#93c572'],
+  ['M', '#8806ce'],
+  ['N', '#ffff99'],
+  ['O', '#ffef00'],
+  ['P', '#dcdcdc'],
+  ['Q', '#c80815'],
+  ['R', '#246bce'],
+  ['S', '#e0b0ff'],
+  ['T', '#d0f0c0']
+]);
+
+const mitoHgColors = new Map([
+  ['A', '#ff8c00'],
+  ['B', '#c80815'],
+  ['C', '#ffc0cb'],
+  ['D', '#fed8b1'],
+  ['E', '#daa520'],
+  ['F', '#ffef00'],
+  ['G', '#ffff99'],
+  ['H', '#246bce'],
+  ['HV', '#246bce'],
+  ['I', '#138808'],
+  ['J', '#008080'],
+  ['K', '#6cb4ee'],
+  ['L0', '#000000'],
+  ['L1', '#59260b'],
+  ['L2', '#964b00'],
+  ['L3', '#cd853f'],
+  ['M', '#dcdcdc'],
+  ['N', '#dcdcdc'],
+  ['P', '#8806ce'],
+  ['Q', '#e0b0ff'],
+  ['R', '#dcdcdc'],
+  ['R0', '#246bce'],
+  ['S', '#fae6fa'],
+  ['T', '#008080'],
+  ['U', '#000080'],
+  ['V', '#246bce'],
+  ['W', '#93c572'],
+  ['X', '#d0f0c0'],
+  ['Y', '#ffd700'],
+  ['Z', '#ffc0cb']
+]);
+
 const skinColors = new Map([
   ['Very Pale', '#fff4f2'],
   ['Pale', '#fedcb9'],
@@ -196,7 +297,7 @@ function updateMap() {
   const columns = ['id', 'group', 'date', 'sex', 'isogg', 'yfull', 'mito', 'skin', 'hair', 'eyes'];
   const titles = ['ID', 'Group', 'Date', 'Sex', 'ISOGG Y Hg', 'YFull Y Hg', 'Mito Hg', 'Skin', 'Hair', 'Eyes'];
   const f = x => x;
-  const renderers = [f, f, renderDate, f, f, f, f, renderSkin, renderHair, renderEyes];
+  const renderers = [f, f, renderDate, f, renderYHg, renderYHg, renderMitoHg, renderSkin, renderHair, renderEyes];
   gridApi.forEachNodeAfterFilter(node => {
     const data = node.data;
     if (data.lat == null) return;
@@ -204,6 +305,32 @@ function updateMap() {
     switch (colorBy) {
       case 'admixture':
         color = colors[indexOfMax(data.admix)];
+        break;
+      case 'isogg':
+        if (data.isogg == null) return;
+        if (/^(A0-T|[A-Z]{2,})/.test(data.isogg)) {
+          color = '#dcdcdc';
+        } else {
+          const hg = data.isogg.match(/^(E1b1b|[A-Z])/)[0];
+          color = yHgColors.get(hg);
+        }
+        break;
+      case 'yfull':
+        if (data.yfull == null) return;
+        if (/^(A0-T|[A-Z]{2,})/.test(data.yfull)) {
+          color = '#dcdcdc';
+        } else {
+          color = yHgColors.get(data.yfull[0]);
+        }
+        break;
+      case 'mito':
+        if (data.mito == null) return;
+        if (/^L([^0-3]|[0-3]')/.test(data.mito)) {
+          color = '#dcdcdc';
+        } else {
+          const hg = data.mito.match(/^(HV|L[0-3]|R0|[A-Z])/)[0];
+          color = mitoHgColors.get(hg);
+        }
         break;
       case 'skin':
         if (data.skin == null) return;
