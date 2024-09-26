@@ -291,9 +291,19 @@ const eyeColors = new Map([
   ['Brown', '#964b00']
 ]);
 
+const pointSizes = new Map([
+  ['very-small', 100],
+  ['small', 500],
+  ['medium', 1000],
+  ['large', 5000],
+  ['very-large', 10000]
+]);
+
 function updateMap() {
   circles.clearLayers();
   const colorBy = document.getElementById('point-color-select').value;
+  const pointSize = pointSizes.get(document.getElementById('point-size-select').value);
+  const jitterSize = document.getElementById('point-jitter-select').value;
   const columns = ['id', 'group', 'date', 'sex', 'isogg', 'yfull', 'mito', 'skin', 'hair', 'eyes'];
   const titles = ['ID', 'Group', 'Date', 'Sex', 'ISOGG Y Hg', 'YFull Y Hg', 'Mito Hg', 'Skin', 'Hair', 'Eyes'];
   const f = x => x;
@@ -344,10 +354,10 @@ function updateMap() {
         if (data.eyes == null) return;
         color = eyeColors.get(data.eyes);
     }
-    const circle = L.circle([data.lat, data.long], {
+    const circle = L.circle([data.lat[jitterSize], data.long[jitterSize]], {
       color: color,
       fillOpacity: 0.5,
-      radius: 5000
+      radius: pointSize
     }).addTo(circles);
     text = '';
     for (let j = 0; j < columns.length; j++) {

@@ -22,7 +22,7 @@
     <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css'>
     <script src='https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.8.0/nouislider.min.js' integrity='sha512-g/feAizmeiVKSwvfW0Xk3ZHZqv5Zs8PEXEBKzL15pM0SevEvoX8eJ4yFWbqakvRj7vtw1Q97bLzEpG2IVWX0Mg==' crossorigin='anonymous' referrerpolicy='no-referrer'></script>
     <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.8.0/nouislider.min.css' integrity='sha512-qveKnGrvOChbSzAdtSs8p69eoLegyh+1hwOMbmpCViIwj7rn4oJjdmMvWOuyQlTOZgTlZA0N2PXA7iA8/2TUYA==' crossorigin='anonymous' referrerpolicy='no-referrer' />
-    <script src='main.js?v=2' defer></script>
+    <script src='main.js?v=3' defer></script>
     <link rel='stylesheet' href='styles.css?v=2'>
   </head>
   <body>
@@ -32,12 +32,7 @@
       </div>
       <div id='controldiv' class='split'>
         <div id='date-range'></div>
-        <div class='row mt-5'>
-          <div class='col'>
-            <button id='select-run-button' type='button' class='btn btn-primary' data-bs-toggle='modal' data-bs-target='#select-run-modal'>
-              Select admixture run
-            </button>
-          </div>
+        <div class='row mt-4'>
           <div class='col'>
             <div class='row g-2'>
               <label for='point-color-select' class='col-auto col-form-label'>Color map points by:</label>
@@ -53,6 +48,42 @@
                 </select>
               </div>
             </div>
+          </div>
+          <div class='col'>
+            <div class='row g-2'>
+              <label for='point-size-select' class='col-auto col-form-label'>Map point size:</label>
+              <div class='col-auto'>
+                <select class='form-select' id='point-size-select' onchange='updateMap()'>
+                  <option value='very-small'>Very small</option>
+                  <option value='small'>Small</option>
+                  <option value='medium'>Medium</option>
+                  <option value='large' selected>Large</option>
+                  <option value='very-large'>Very large</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class='col'>
+            <div class='row g-2'>
+              <label for='point-jitter-select' class='col-auto col-form-label'>Map point jitter:</label>
+              <div class='col-auto'>
+                <select class='form-select' id='point-jitter-select' onchange='updateMap()'>
+                  <option value='0'>None</option>
+                  <option value='1'>Very small</option>
+                  <option value='2'>Small</option>
+                  <option value='3'>Medium</option>
+                  <option value='4'>Large</option>
+                  <option value='5'>Very large</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class='row mt-4'>
+          <div class='col'>
+            <button id='select-run-button' type='button' class='btn btn-primary' data-bs-toggle='modal' data-bs-target='#select-run-modal'>
+              Select admixture run
+            </button>
           </div>
         </div>
       </div>
