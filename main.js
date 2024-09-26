@@ -417,7 +417,7 @@ function loadRun() {
   });
 }
 
-fetch('annotation.json')
+fetch('annotation.json?v=3')
 .then(response => response.json())
 .then(json => {
   annotation = json;
