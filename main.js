@@ -1,11 +1,64 @@
 const map = L.map('map', {preferCanvas: true}).setView([23.43631, 0], 2);
 
-L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer/tile/{z}/{y}/{x}', {
-  maxZoom: 16,
-  attribution: '&copy; Esri'
-}).addTo(map);
+const url = 'https://server.arcgisonline.com/ArcGIS/rest/services/{service}/MapServer/tile/{z}/{y}/{x}';
 
-document.querySelector('.leaflet-attribution-flag').remove();
+const basemaps = [
+  L.tileLayer(url, {
+    service: 'NatGeo_World_Map',
+    label: 'National Geographic',
+    attribution: '&copy; Esri',
+    maxZoom: 16
+  }),
+  L.tileLayer(url, {
+    service: 'World_Topo_Map',
+    label: 'Topography',
+    attribution: '&copy; Esri'
+  }),
+  L.tileLayer(url, {
+    service : 'World_Imagery',
+    label: 'Satellite',
+    attribution: '&copy; Esri'
+  }),
+  L.tileLayer(url, {
+    service : 'World_Imagery',
+    label: 'Hybrid',
+    attribution: '&copy; Esri'
+  }),
+  L.tileLayer(url, {
+    service: 'Canvas/World_Light_Gray_Base',
+    label: 'Light Gray',
+    attribution: '&copy; Esri',
+    maxZoom: 16
+  }),
+  L.tileLayer(url, {
+    service: 'Canvas/World_Dark_Gray_Base',
+    label: 'Dark Gray',
+    attribution: '&copy; Esri',
+    maxZoom: 16
+  })
+];
+
+map.addControl(L.control.basemaps({
+  basemaps: basemaps,
+  tileX: 0,
+  tileY: 0,
+  tileZ: 1,
+  position: 'topright'
+}));
+
+const boundaries = L.tileLayer(url, {
+  service: 'Reference/World_Boundaries_and_Places'
+});
+
+map.on('baselayerchange', layer => {
+  if (layer.options.label == 'Hybrid') {
+    map.addLayer(boundaries);
+  } else {
+    map.removeLayer(boundaries);
+  }
+});
+
+map.attributionControl.setPrefix(map.attributionControl.options.prefix.replace(/<svg.*svg> /, ''));
 
 const circles = L.layerGroup().addTo(map);
 
