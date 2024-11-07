@@ -184,8 +184,7 @@ let gridOptions = {
     { headerName: 'Eyes', field: 'eyes', width: 76, cellClass: eyesClass },
     { headerName: 'Country', field: 'country', width: 135 },
     { headerName: 'Sex', field: 'sex', width: 76 },
-    { headerName: 'YFull Y Hg', field: 'yfull', width: 135, cellClass: yHgClass },
-    { headerName: 'Index', field: 'index', width: 90 }
+    { headerName: 'YFull Y Hg', field: 'yfull', width: 135, cellClass: yHgClass }
   ],
   enableCellTextSelection: true,
   onFilterChanged: updateMap,
@@ -196,11 +195,11 @@ let gridOptions = {
 const dateRange = document.getElementById('date-range');
 
 noUiSlider.create(dateRange, {
-  start: [-43500, 1950],
+  start: [-48500, 1950],
   behaviour: 'tap-drag',
   connect: true,
   range: {
-    'min': [-43500, 500],
+    'min': [-48500, 500],
     '20%': [-8000, 10],
     'max': [1950]
   },
@@ -213,7 +212,7 @@ noUiSlider.create(dateRange, {
 
 function isExternalFilterPresent() {
   const [min, max] = dateRange.noUiSlider.get(true);
-  return min != -43500 || max != 1950;
+  return min != -48500 || max != 1950;
 }
 
 function doesExternalFilterPass(node) {
@@ -470,16 +469,16 @@ function loadRun() {
   });
 }
 
-fetch('annotation.json?v=3')
+fetch('annotation.json?v=4')
 .then(response => response.json())
 .then(json => {
   annotation = json;
-  fetch('runs.json')
+  fetch('runs.json?v=3')
   .then(response => response.json())
   .then(json => {
     const runData = json;
     runData.sort((a, b) => b.k - a.k);
-    runData.sort((a, b) => b.date - a.date);
+    runData.sort((a, b) => b.date.localeCompare(a.date));
     runGridApi.setGridOption('rowData', runData);
     runGridApi.getRowNode('0').setSelected(true);
     loadRun();
