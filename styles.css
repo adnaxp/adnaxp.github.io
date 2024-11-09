@@ -25,6 +25,10 @@
   height: 400px;
 }
 
+.leaflet-popup-content {
+  word-wrap: break-word;
+}
+
 div[col-id='admix'] .ag-cell-wrapper {
   width: 100%;
 }
