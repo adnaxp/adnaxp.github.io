@@ -64,7 +64,7 @@ const circles = L.layerGroup().addTo(map);
 
 let annotation, percentages, colors;
 
-function renderAdmix(params) {
+function renderAdmixTable(params) {
   let div = '<div class="bar-chart-bar">';
   const admix = params.data.admix;
   for (let i = 0; i < admix.length; i++) {
@@ -72,6 +72,15 @@ function renderAdmix(params) {
   }
   div += '</div>';
   return div;
+}
+
+function renderAdmixMap(data) {
+  let span = '<span class="bar-chart-bar">';
+  for (let i = 0; i < data.length; i++) {
+    span += `<span class="bar" style="width:${data[i]}%; background-color:${colors[i]};"></span>`;
+  }
+  span += '</span>';
+  return span;
 }
 
 function yHgClass(params) {
@@ -170,7 +179,7 @@ let gridOptions = {
   },
   columnDefs: [
     {
-      headerName: 'Admixture', colId: 'admix', width: 332, cellRenderer: renderAdmix,
+      headerName: 'Admixture', colId: 'admix', width: 332, cellRenderer: renderAdmixTable,
       cellStyle: {display: 'flex', alignItems: 'center'}, pinned: 'left',
       sortable: false, filter: false
     },
@@ -356,10 +365,19 @@ function updateMap() {
   const colorBy = document.getElementById('point-color-select').value;
   const pointSize = pointSizes.get(document.getElementById('point-size-select').value);
   const jitterSize = document.getElementById('point-jitter-select').value;
-  const columns = ['id', 'group', 'date', 'sex', 'isogg', 'yfull', 'mito', 'skin', 'hair', 'eyes'];
-  const titles = ['ID', 'Group', 'Date', 'Sex', 'ISOGG Y Hg', 'YFull Y Hg', 'Mito Hg', 'Skin', 'Hair', 'Eyes'];
+  const columns = [
+    'id', 'group', 'date', 'sex', 'admix', 'isogg',
+    'yfull', 'mito', 'skin', 'hair', 'eyes'
+  ];
+  const titles = [
+    'ID', 'Group', 'Date', 'Sex', 'Admixture', 'ISOGG Y Hg',
+    'YFull Y Hg', 'Mito Hg', 'Skin', 'Hair', 'Eyes'
+  ];
   const f = x => x;
-  const renderers = [f, f, renderDate, f, renderYHg, renderYHg, renderMitoHg, renderSkin, renderHair, renderEyes];
+  const renderers = [
+    f, f, renderDate, f, renderAdmixMap, renderYHg,
+    renderYHg, renderMitoHg, renderSkin, renderHair, renderEyes
+  ];
   gridApi.forEachNodeAfterFilter(node => {
     const data = node.data;
     if (data.lat == null) return;

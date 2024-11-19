@@ -39,6 +39,13 @@ div[col-id='admix'] .ag-cell-wrapper {
   height: 20px;
 }
 
+span.bar-chart-bar {
+  display: inline-block;
+  vertical-align: text-bottom;
+  height: 15px;
+  width: 150px;
+}
+
 .bar {
   float: left;
   height: 100%;
