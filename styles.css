@@ -25,8 +25,21 @@
   height: 400px;
 }
 
+.leaflet-container {
+  font-family: var(--bs-font-sans-serif);
+}
+
 .leaflet-popup-content {
   word-wrap: break-word;
+  line-height: normal;
+}
+
+.leaflet-popup-content > div {
+  margin-bottom: 2px;
+}
+
+.ag-theme-quartz {
+  --ag-font-family: var(--bs-font-sans-serif);
 }
 
 div[col-id='admix'] .ag-cell-wrapper {
@@ -42,7 +55,7 @@ div[col-id='admix'] .ag-cell-wrapper {
 span.bar-chart-bar {
   display: inline-block;
   vertical-align: text-bottom;
-  height: 15px;
+  height: auto;
   width: 150px;
 }
 

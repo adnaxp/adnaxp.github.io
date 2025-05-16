@@ -77,7 +77,7 @@ function renderAdmixTable(params) {
 function renderAdmixMap(data) {
   let span = '<span class="bar-chart-bar">';
   for (let i = 0; i < data.length; i++) {
-    span += `<span class="bar" style="width:${data[i]}%; background-color:${colors[i]};"></span>`;
+    span += `<span class="bar" style="width:${data[i]}%; background-color:${colors[i]};">&#8203;</span>`;
   }
   span += '</span>';
   return span;
@@ -429,13 +429,13 @@ function updateMap() {
       fillOpacity: 0.5,
       radius: pointSize
     }).addTo(circles);
-    text = '';
+    let content = '';
     for (let j = 0; j < columns.length; j++) {
       if (data[columns[j]] != null) {
-        text += `${titles[j]}: ${renderers[j](data[columns[j]])}<br>`;
+        content += `<div>${titles[j]}: ${renderers[j](data[columns[j]])}</div>`;
       }
     }
-    circle.bindPopup(text);
+    circle.bindPopup(content);
   });
 }
 
