@@ -171,6 +171,10 @@ function renderDate(data) {
   return data.toString().replace('-', '&minus;').replace(/(\d{2})(\d{3})/, '$1,$2');
 }
 
+function renderGroup(data) {
+  return data.replace(/([_.])/g, '<wbr/>$1');
+}
+
 let gridOptions = {
   rowHeight: 24,
   defaultColDef: {
@@ -375,7 +379,7 @@ function updateMap() {
   ];
   const f = x => x;
   const renderers = [
-    f, f, renderDate, f, renderAdmixMap, renderYHg,
+    f, renderGroup, renderDate, f, renderAdmixMap, renderYHg,
     renderYHg, renderMitoHg, renderSkin, renderHair, renderEyes
   ];
   gridApi.forEachNodeAfterFilter(node => {
