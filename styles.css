@@ -8,7 +8,7 @@
 }
 
 #tablediv {
-  padding: 15px 30px;
+  padding: 0px 30px;
   z-index: 1;
 }
 
@@ -17,8 +17,8 @@
 }
 
 #table {
-  margin-bottom: 30px;
-  height: 1000px;
+  padding: 15px 0px 30px;
+  height: 100vh;
 }
 
 #run-table {
